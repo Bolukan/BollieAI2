@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
-namespace BollieAI2.Map
+namespace BollieAI2
 {
     /// <summary>
     /// 
     /// </summary>
-    class Map
+    public class Map
     {
         /// <summary>
         /// Initialise
@@ -19,6 +20,27 @@ namespace BollieAI2.Map
             Regions = new List<Region>();
             Wastelands = new List<Region>();
             PickStartingRegions = new List<Region>();
+        }
+
+        /// <summary>
+        /// Map instance
+        /// </summary>
+        private static Map _instance;
+
+        /// <summary>
+        /// Map instance: "Map.Current"
+        /// </summary>
+        public static Map Current
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new Map();
+                }
+                return _instance;
+            }
         }
 
         /// <summary>
@@ -48,7 +70,7 @@ namespace BollieAI2.Map
         /// <summary>
         /// The maximum (and initial) amount of time in the timebank is given in ms
         /// </summary>
-        public int Timebank_initial { get; set; }
+        public int TimebankInitial { get; set; }
 
         /// <summary>
         /// The amount of time that is added to your timebank each time a move is requested in ms.
@@ -63,12 +85,12 @@ namespace BollieAI2.Map
         /// <summary>
         /// The name of your bot is given.
         /// </summary>
-        public string YourBot { get; set; }
+        public String YourBot { get; set; }
 
         /// <summary>
         /// The name of your opponent bot is given.
         /// </summary>
-        public string OpponentBot { get; set; }
+        public String OpponentBot { get; set; }
 
     }
 }

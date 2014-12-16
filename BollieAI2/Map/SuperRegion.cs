@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BollieAI2.Map
+namespace BollieAI2
 {
     /// <summary>
     /// Superregion is one or more regions with a bonus armies reward
     /// </summary>
-    class SuperRegion
+    public class SuperRegion
     {
         /// <summary>
         /// Initialise

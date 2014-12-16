@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BollieAI2.Map
+namespace BollieAI2
 {
     /// <summary>
     /// 
     /// </summary>
-    class Region
+    public class Region
     {
         /// <summary>
         /// Initialise
