@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BollieAI2.Board;
 
-namespace BollieAI2
+namespace BollieAI2.Services
 {
     /// <summary>
     /// 
@@ -97,6 +98,12 @@ namespace BollieAI2
         /// <param name="parts"></param>
         public void SuperRegions(String[] parts)
         {
+            for (int i = 2; i < parts.Length; i++)
+            {
+                int superRegionId = int.Parse(parts[i]);
+                int bonusArmiesAward = int.Parse(parts[++i]);
+                Map.Current.SuperRegions.Add(new SuperRegion() { Id = superRegionId, BonusArmiesAward = bonusArmiesAward });
+            }
         }
 
         /// <summary>
@@ -106,6 +113,17 @@ namespace BollieAI2
         /// <param name="parts"></param>
         public void Regions(String[] parts)
         {
+            for (int i = 2; i < parts.Length; i++)
+            {
+                int regionId = int.Parse(parts[i]);
+                int superRegionId = int.Parse(parts[++i]);
+                SuperRegion superRegion = Map.Current.SuperRegions
+                    .Where(sr => sr.Id == superRegionId)
+                    .FirstOrDefault();
+                Region region = new Region() { Id = regionId, SuperRegion = superRegion };
+                superRegion.Regions.Add(region);
+                Map.Current.Regions.Add(region);
+            }
         }
 
         /// <summary>
@@ -116,6 +134,27 @@ namespace BollieAI2
         /// <param name="parts"></param>
         public void Neighbors(String[] parts)
         {
+            for (int i = 2; i < parts.Length; i++)
+            {
+                int regionId = int.Parse(parts[i]);
+                Region firstRegion = Map.Current.Regions
+                    .Where(region => region.Id == regionId)
+                    .FirstOrDefault();
+
+                String[] neighborStrings = parts[++i].Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                List<Region> neighborRegions =
+                    neighborStrings
+                    .Select(n => Map.Current.Regions.Where(region => region.Id == int.Parse(n)).FirstOrDefault())
+                    .ToList();
+
+                neighborRegions.ForEach(
+                   (secondRegion) =>
+                   {
+                       secondRegion.Neighbours.Add(firstRegion);
+                       firstRegion.Neighbours.Add(secondRegion);
+                   }
+               );
+            }
         }
 
         /// <summary>
@@ -125,6 +164,11 @@ namespace BollieAI2
         /// <param name="parts"></param>
         public void Wastelands(String[] parts)
         {
+            for (int i = 2; i < parts.Length; i++)
+            {
+                int regionId = int.Parse(parts[i]);
+                Map.Current.Wastelands.Add(Map.Current.Regions.Where(region => region.Id == regionId).FirstOrDefault());
+            }
         }
 
         /// <summary>
@@ -186,7 +230,7 @@ namespace BollieAI2
         /// <param name="parts"></param>
         public void StartingArmies(String[] parts)
         {
-            
+            // outside Map -> state of turn
         }
 
         /// <summary>

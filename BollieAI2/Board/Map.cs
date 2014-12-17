@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
-namespace BollieAI2
+namespace BollieAI2.Board
 {
     /// <summary>
     /// 

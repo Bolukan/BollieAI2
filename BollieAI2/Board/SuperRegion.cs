@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BollieAI2
+namespace BollieAI2.Board
 {
     /// <summary>
     /// Superregion is one or more regions with a bonus armies reward
@@ -17,7 +17,7 @@ namespace BollieAI2
         {
             Regions = new List<Region>();
         }
-
+        
         /// <summary>
         /// setup_map super_regions [-i -i ...]
         /// Odd numbers are superregion ids, even numbers are rewards.
