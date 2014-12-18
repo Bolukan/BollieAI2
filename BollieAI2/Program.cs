@@ -9,6 +9,9 @@ namespace BollieAI2
     {
         static void Main(string[] args)
         {
+            Services.Combat.test();
+            Console.ReadLine();
+
         }
     }
 }
