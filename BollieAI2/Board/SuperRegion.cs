@@ -35,6 +35,39 @@ namespace BollieAI2.Board
         /// </summary>
         public List<Region> Regions { get; set; }
 
+        /// <summary>
+        /// Pick starting region in this SuperRegion
+        /// </summary>
+        public Region PickStartingRegion { get; set; }
 
+        #region Assess
+
+        /// <summary>
+        /// Cost of owning: number of regions 
+        /// </summary>
+        public int CurrentCostOwn { get; set; }
+
+        /// <summary>
+        /// Cost of combat: number of armies * 0.7
+        /// </summary>
+        public int CurrentCostLoss { get; set; }
+
+        /// <summary>
+        /// Worth of SuperRegion: BonusArmies / ROI%
+        /// </summary>
+        public int CurrentBonus { get; set; }
+
+        /// <summary>
+        /// Value of SuperRegion (can be negative)
+        /// </summary>
+        public int CurrentValue
+        {
+            get
+            {
+                return CurrentBonus - (CurrentCostLoss + CurrentCostOwn);
+            }
+        }
+
+        #endregion
     }
 }

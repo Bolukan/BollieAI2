@@ -167,7 +167,11 @@ namespace BollieAI2.Services
             for (int i = 2; i < parts.Length; i++)
             {
                 int regionId = int.Parse(parts[i]);
-                Map.Current.Wastelands.Add(Map.Current.Regions.Where(region => region.Id == regionId).FirstOrDefault());
+                Region wasteland = Map.Current.Regions.Where(region => region.Id == regionId).FirstOrDefault();
+                wasteland.CurrentPlayer = PlayerType.Wasteland;
+                // keep it wasteland till other information is received
+                wasteland.CurrentArmies = Configuration.WASTELAND_ARMIES;
+                Map.Current.Wastelands.Add(wasteland);
             }
         }
 
@@ -177,6 +181,16 @@ namespace BollieAI2.Services
         /// <param name="parts"></param>
         public void PickStartingRegion(String[] parts)
         {
+            Map.Current.CurrentTimebank = int.Parse(parts[1]);
+
+            List<Region> pickRegions = new List<Region>();
+            for (int i = 2; i < parts.Length; i++)
+            {
+                Region pickRegion = Map.Current.Regions.Where(region => region.Id == int.Parse(parts[i])).FirstOrDefault();
+                pickRegions.Add(pickRegion);
+            }
+
+            PickStartingRegions.PickFromRegions(pickRegions);
         }
 
         /// <summary>

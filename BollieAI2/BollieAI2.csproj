@@ -41,14 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Board\Configuration.cs" />
     <Compile Include="Board\Map.cs" />
+    <Compile Include="Board\Player.cs" />
     <Compile Include="Board\Region.cs" />
     <Compile Include="Board\SuperRegion.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AttackTransfer.cs" />
     <Compile Include="Services\Combat.cs" />
+    <Compile Include="Services\CurrentUpdate.cs" />
     <Compile Include="Services\Parser.cs" />
+    <Compile Include="Services\PickStartingRegions.cs" />
     <Compile Include="Services\PlaceArmies.cs" />
   </ItemGroup>
   <ItemGroup>

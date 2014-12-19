@@ -16,6 +16,8 @@ namespace BollieAI2.Board
         public Region()
         {
             Neighbours = new List<Region>();
+            CurrentPlayer = PlayerType.Unknown;
+            CurrentArmies = 2;
         }
         
         /// <summary>
@@ -35,6 +37,20 @@ namespace BollieAI2.Board
         /// The connectivity of the regions are given
         /// </summary>
         public List<Region> Neighbours { get; set; }
+        
+        #region Turnbased
+
+        /// <summary>
+        /// Player in charge of region
+        /// </summary>
+        public PlayerType CurrentPlayer { get; set; }
+
+        /// <summary>
+        /// Armies in region
+        /// </summary>
+        public int CurrentArmies { get; set; }
+        
+        #endregion
 
     }
 }

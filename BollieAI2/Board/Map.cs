@@ -92,5 +92,13 @@ namespace BollieAI2.Board
         /// </summary>
         public String OpponentBot { get; set; }
 
+        #region Current
+
+        /// <summary>
+        /// ms available for current operation
+        /// </summary>
+        public int CurrentTimebank;
+
+        #endregion
     }
 }
