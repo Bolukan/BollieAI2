@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using BollieAI2.Board;
+using System.IO;
 
 namespace BollieAI2.Services
 {
@@ -36,7 +37,6 @@ namespace BollieAI2.Services
                 pickRegions.ForEach(r =>
                     {
                         r.SuperRegion.PickStartingRegion = r;
-                        r.CurrentPlayer = PlayerType.Opponent;
                     }
                 );
             }
@@ -44,11 +44,8 @@ namespace BollieAI2.Services
             // all times
             
             // TEMPORARY: PICK FIRST
-            return pickRegions[0];
-
+            Region pickRegion = pickRegions.OrderByDescending(r => r.SuperRegion.CurrentValue).FirstOrDefault();
+            return pickRegion;
         }
-
-
-
     }
 }

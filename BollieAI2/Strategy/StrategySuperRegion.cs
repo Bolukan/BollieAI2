@@ -1,0 +1,86 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using BollieAI2.Board;
+using BollieAI2.Services;
+
+namespace BollieAI2.Strategy
+{
+    /// <summary>
+    /// Strategy for SuperRegion based on owners of regions
+    /// </summary>
+    public enum StrategySuperRegionType
+    {
+        Defend = 1,   // only me
+        MixedHostile, // me and opponent
+        MixedNeutral, // me and not opponent
+        KeepWatch,    // not me, not only opponent
+        Attack,       // not me, only opponent
+        Unknown       // no sight
+    }
+
+    /// <summary>
+    /// Strategy on SuperRegions
+    /// </summary>
+    public class StrategySuperRegion
+    {
+        /// <summary>
+        /// Update StrategySuperRegion
+        /// </summary>
+        public static void UpdateStrategySuperRegion()
+        {
+            Map.Current.SuperRegions.ForEach(SR =>
+                {
+                    // count amount per players
+                    IEnumerable<Region> RegionMe = SR.RegionsPlayer(PlayerType.Me);
+                    IEnumerable<Region> RegionOpponent = SR.RegionsPlayer(PlayerType.Opponent);
+                    IEnumerable<Region> RegionNeutral = SR.RegionsPlayer(PlayerType.Neutral);
+                    IEnumerable<Region> RegionUnknown = SR.RegionsPlayer(PlayerType.Unknown);
+                    
+                    // all me
+                    if (RegionMe.Count() == SR.Regions.Count())
+                    {
+                        SR.StrategySuperRegion = StrategySuperRegionType.Defend;
+                    }
+                    // some me
+                    else if (RegionMe.Count() != 0)
+                    {
+                        // opponent seen SuperRegion
+                        if (RegionOpponent.Count() != 0)
+                        {
+                            SR.StrategySuperRegion = StrategySuperRegionType.MixedHostile;
+                        }
+                        else
+                        // together in SuperRegion
+                        {
+                            SR.StrategySuperRegion = StrategySuperRegionType.MixedNeutral;
+                        }
+                    }
+                    // not me
+                    else
+                    {
+                        // opponent seen SuperRegion
+                        if (RegionOpponent.Count() != 0)
+                        {
+                            if (RegionNeutral.Count() != 0)
+                            {
+                                SR.StrategySuperRegion = StrategySuperRegionType.KeepWatch;
+                            }
+                            else
+                            {
+                                SR.StrategySuperRegion = StrategySuperRegionType.Attack;
+                            }
+                        }
+                        else
+                        {
+                            SR.StrategySuperRegion = StrategySuperRegionType.Unknown;
+                        }
+                    }
+                }
+            );
+        } // end sub
+    
+    }
+}

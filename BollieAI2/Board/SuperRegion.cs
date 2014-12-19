@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using BollieAI2.Strategy;
+
 namespace BollieAI2.Board
 {
     /// <summary>
@@ -34,6 +36,16 @@ namespace BollieAI2.Board
         /// Regions
         /// </summary>
         public List<Region> Regions { get; set; }
+
+        /// <summary>
+        /// Regions of a particular player
+        /// </summary>
+        /// <param name="player">Player</param>
+        /// <returns>Regions</returns>
+        public IEnumerable<Region> RegionsPlayer(PlayerType player) 
+        {
+            return Regions.Where(R => R.CurrentPlayer == player);
+        }
 
         /// <summary>
         /// Pick starting region in this SuperRegion
@@ -68,6 +80,8 @@ namespace BollieAI2.Board
             }
         }
 
+        public Strategy.StrategySuperRegionType StrategySuperRegion { get; set; }
+        
         #endregion
     }
 }

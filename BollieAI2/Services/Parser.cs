@@ -82,6 +82,9 @@ namespace BollieAI2.Services
                         case "wastelands":
                             YourBot(parts);
                             break;
+                        case "opponent_starting_regions":
+                            OpponentStartingRegions(parts);
+                            break;
                         default:
                             break;
                     }
@@ -176,6 +179,19 @@ namespace BollieAI2.Services
         }
 
         /// <summary>
+        /// All the regions your opponent has picked to start on, called after distribution of starting regions.
+        /// </summary>
+        /// <param name="parts"></param>
+        public void OpponentStartingRegions(String[] parts)
+        {
+            for (int i = 2; i < parts.Length; i++)
+            {
+                Region region = Map.Current.Regions.Where(r => r.Id == int.Parse(parts[i])).FirstOrDefault();
+                region.CurrentPlayer = PlayerType.Opponent;
+            }
+        }
+
+        /// <summary>
         /// Starting regions to be chosen from are given, one region id is to be returned by your bot
         /// </summary>
         /// <param name="parts"></param>
@@ -183,14 +199,20 @@ namespace BollieAI2.Services
         {
             Map.Current.CurrentTimebank = int.Parse(parts[1]);
 
+            // read possible regions
             List<Region> pickRegions = new List<Region>();
             for (int i = 2; i < parts.Length; i++)
             {
                 Region pickRegion = Map.Current.Regions.Where(region => region.Id == int.Parse(parts[i])).FirstOrDefault();
                 pickRegions.Add(pickRegion);
             }
-
-            PickStartingRegions.PickFromRegions(pickRegions);
+            
+            // choose region
+            Region iWantThisRegion = PickStartingRegions.PickFromRegions(pickRegions);
+            
+            // tell server
+            Console.WriteLine("{0}", iWantThisRegion.Id);
+            iWantThisRegion.CurrentPlayer = PlayerType.Me;
         }
 
         /// <summary>
@@ -244,7 +266,7 @@ namespace BollieAI2.Services
         /// <param name="parts"></param>
         public void StartingArmies(String[] parts)
         {
-            // outside Map -> state of turn
+            Map.Current.StartingArmies = int.Parse(parts[2]);
         }
 
         /// <summary>
@@ -254,6 +276,18 @@ namespace BollieAI2.Services
         /// <param name="parts"></param>
         public void UpdateMap(String[] parts)
         {
+            // read updated regions
+            List<MapUpdate> mapUpdates = new List<MapUpdate>();
+            for (int i = 1; i < parts.Length; i++)
+            {
+                Region regionUpdate = Map.Current.Regions.Where(region => region.Id == int.Parse(parts[i])).FirstOrDefault();
+                PlayerType playerUpdate = Player.Player(parts[++i]);
+                int armiesUpdate = int.Parse(parts[++i]);
+                mapUpdates.Add(new MapUpdate(regionUpdate, playerUpdate, armiesUpdate));
+            }
+
+            Map.Current.MapUpdates = mapUpdates;
+            
         }
 
         /// <summary>
@@ -262,6 +296,36 @@ namespace BollieAI2.Services
         /// <param name="parts"></param>
         public void OpponentMoves(String[] parts)
         {
+            List<PlaceArmies> opponentPlaceArmies = new List<PlaceArmies>();
+            List<AttackTransfer> opponentAttackTransfer = new List<AttackTransfer>();
+
+            for (int i = 1; i < parts.Length; i++)
+            {
+                PlayerType playerUpdate = Player.Player(parts[i]);
+                String command = parts[++i];
+                if (command == "place_armies")
+                {
+                    Region region = Map.Current.Regions.Where(r => r.Id == int.Parse(parts[++i])).FirstOrDefault();
+                    int armies = int.Parse(parts[++i]);
+                    opponentPlaceArmies.Add(new PlaceArmies(armies, region);
+                }
+                else if (command == "attack/transfer")
+                {
+                    Region regionSource = Map.Current.Regions.Where(r => r.Id == int.Parse(parts[++i])).FirstOrDefault();
+                    Region regionTarget = Map.Current.Regions.Where(r => r.Id == int.Parse(parts[++i])).FirstOrDefault();
+                    int armies = int.Parse(parts[++i]);
+                    opponentAttackTransfer.Add(new AttackTransfer(armies, regionSource, regionTarget));
+                }
+            }
+
+            // Save moves for further use
+            Map.Current.OpponentLastPlaceArmies = opponentPlaceArmies;
+            Map.Current.OpponentLastAttackTransfer = opponentAttackTransfer;
+
+            // Update values 
+            MapUpdate.UpdateOpponent();
+            MapUpdate.UpdateMap();
+
         }
 
         /// <summary>

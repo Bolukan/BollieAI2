@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Diagnostics;
+using BollieAI2.Services;
 
 namespace BollieAI2.Board
 {
@@ -98,6 +98,31 @@ namespace BollieAI2.Board
         /// ms available for current operation
         /// </summary>
         public int CurrentTimebank;
+
+        /// <summary>
+        /// Armies to place on Map this turn
+        /// </summary>
+        public int StartingArmies { get; set; }
+        
+        /// <summary>
+        /// Number of Regions for each player
+        /// </summary>
+        public Dictionary<PlayerType, int> CurrentRegionsCount;
+
+        /// <summary>
+        /// all the visible moves the opponent has done are given in consecutive order.
+        /// </summary>
+        public List<PlaceArmies> OpponentLastPlaceArmies { get; set; }
+
+        /// <summary>
+        /// all the visible moves the opponent has done are given in consecutive order.
+        /// </summary>
+        public List<AttackTransfer> OpponentLastAttackTransfer { get; set; }
+
+        /// <summary>
+        /// Map updates
+        /// </summary>
+        public List<MapUpdate> MapUpdates { get; set; }
 
         #endregion
     }
