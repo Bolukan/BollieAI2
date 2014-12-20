@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 using BollieAI2.Services;
 
 namespace BollieAI2.Board
@@ -19,7 +20,6 @@ namespace BollieAI2.Board
             SuperRegions = new List<SuperRegion>();
             Regions = new List<Region>();
             Wastelands = new List<Region>();
-            PickStartingRegions = new List<Region>();
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace BollieAI2.Board
         /// If there is an uneven amount of regions to be picked from, the last region remaining will be a neutral, 
         /// so both players have an equal amount of starting regions.
         /// </summary>
-        public List<Region> PickStartingRegions { get; set; }
+        public List<Region> StartingRegions { get; set; }
 
         /// <summary>
         /// The maximum (and initial) amount of time in the timebank is given in ms
@@ -103,7 +103,22 @@ namespace BollieAI2.Board
         /// Armies to place on Map this turn
         /// </summary>
         public int StartingArmies { get; set; }
-        
+
+        public int GetArmies()
+        {
+            return GetArmies(StartingArmies);
+        }
+
+        public int GetArmies(int armies)
+        {
+            if (armies > StartingArmies)
+            {
+                armies = StartingArmies;
+            }
+            StartingArmies -= StartingArmies;
+            return armies;
+        }
+
         /// <summary>
         /// Number of Regions for each player
         /// </summary>

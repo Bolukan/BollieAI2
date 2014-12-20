@@ -206,7 +206,7 @@ namespace BollieAI2.Strategy
          * Algorithm doesn't work very well if type is not nullable
          * Check http://stackoverflow.com/questions/374651/how-to-check-if-an-object-is-nullable
          */
-        static bool IsNullable(Node obj)
+        static bool IsNullable(Region obj)
         {
             if (obj == null) return true; // obvious
             Type type = typeof(Node);

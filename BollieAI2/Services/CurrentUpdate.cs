@@ -14,6 +14,13 @@ namespace BollieAI2.Services
         /// <summary>
         /// Update Current values for SuperRegion
         /// </summary>
+        public static void UpdateRegion()
+        {
+        }
+
+        /// <summary>
+        /// Update Current values for SuperRegion
+        /// </summary>
         public static void UpdateSuperRegion()
         {
             Map.Current.SuperRegions.ForEach(sr =>

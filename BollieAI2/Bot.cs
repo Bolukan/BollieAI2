@@ -35,6 +35,7 @@ namespace BollieAI2
                 {
                     parser.Parse(line);
                 }
+                Console.ReadLine();
             }
         
             while (true)

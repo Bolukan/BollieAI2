@@ -14,8 +14,7 @@ namespace BollieAI2.Board
         Neutral = 0x02,
         Me = 0x04,
         Opponent = 0x08,
-        Wasteland = 0x10,
-        NotMe = Unknown | Neutral | Opponent | Wasteland,
+        NotMe = Unknown | Neutral | Opponent ,
         All = NotMe | Me
     }
 
@@ -29,7 +28,7 @@ namespace BollieAI2.Board
         /// </summary>
         /// <param name="name">name</param>
         /// <returns>playercode</returns>
-        public static PlayerType Player(string name)
+        public static PlayerType PlayerId(string name)
         {
             if (name == Configuration.PLAYER_NEUTRAL) return PlayerType.Neutral;
             if (name == Map.Current.YourBot) return PlayerType.Me;

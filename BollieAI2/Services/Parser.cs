@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using BollieAI2.Board;
+using BollieAI2.Strategy;
 
 namespace BollieAI2.Services
 {
@@ -60,6 +61,9 @@ namespace BollieAI2.Services
                         case "starting_armies":
                             StartingArmies(parts);
                             break;
+                        case "starting_regions":
+                            StartingRegions(parts);
+                            break;
                         default:
                             break;
                     }
@@ -71,16 +75,16 @@ namespace BollieAI2.Services
                     switch (parts[1].ToLowerInvariant())
                     {
                         case "super_regions":
-                            TimeBank(parts);
+                            SuperRegions(parts);
                             break;
                         case "regions":
-                            TimePerMove(parts);
+                            Regions(parts);
                             break;
                         case "neighbors":
-                            MaxRounds(parts);
+                            Neighbors(parts);
                             break;
                         case "wastelands":
-                            YourBot(parts);
+                            Wastelands(parts);
                             break;
                         case "opponent_starting_regions":
                             OpponentStartingRegions(parts);
@@ -171,7 +175,7 @@ namespace BollieAI2.Services
             {
                 int regionId = int.Parse(parts[i]);
                 Region wasteland = Map.Current.Regions.Where(region => region.Id == regionId).FirstOrDefault();
-                wasteland.CurrentPlayer = PlayerType.Wasteland;
+                wasteland.CurrentPlayer = PlayerType.Neutral;
                 // keep it wasteland till other information is received
                 wasteland.CurrentArmies = Configuration.WASTELAND_ARMIES;
                 Map.Current.Wastelands.Add(wasteland);
@@ -208,11 +212,11 @@ namespace BollieAI2.Services
             }
             
             // choose region
-            Region iWantThisRegion = PickStartingRegions.PickFromRegions(pickRegions);
+            Region iWantThisRegion = BollieAI2.Services.StartingRegions.PickFromRegions(pickRegions);
             
             // tell server
             Console.WriteLine("{0}", iWantThisRegion.Id);
-            iWantThisRegion.CurrentPlayer = PlayerType.Me;
+            
         }
 
         /// <summary>
@@ -269,6 +273,19 @@ namespace BollieAI2.Services
             Map.Current.StartingArmies = int.Parse(parts[2]);
         }
 
+        public void StartingRegions(String[] parts)
+        {
+            // read possible regions
+            List<Region> pickRegions = new List<Region>();
+            for (int i = 2; i < parts.Length; i++)
+            {
+                pickRegions.Add(Map.Current.Regions.Where(region => region.Id == int.Parse(parts[i])).FirstOrDefault());
+            }
+
+            BollieAI2.Services.StartingRegions.SetStartingRegions(pickRegions);
+
+        }
+
         /// <summary>
         /// Visible map for the bot is given like this: 
         /// region id; player owning region; number of armies. 
@@ -281,7 +298,7 @@ namespace BollieAI2.Services
             for (int i = 1; i < parts.Length; i++)
             {
                 Region regionUpdate = Map.Current.Regions.Where(region => region.Id == int.Parse(parts[i])).FirstOrDefault();
-                PlayerType playerUpdate = Player.Player(parts[++i]);
+                PlayerType playerUpdate = Player.PlayerId(parts[++i]);
                 int armiesUpdate = int.Parse(parts[++i]);
                 mapUpdates.Add(new MapUpdate(regionUpdate, playerUpdate, armiesUpdate));
             }
@@ -301,18 +318,21 @@ namespace BollieAI2.Services
 
             for (int i = 1; i < parts.Length; i++)
             {
-                PlayerType playerUpdate = Player.Player(parts[i]);
+                PlayerType playerUpdate = Player.PlayerId(parts[i]);
                 String command = parts[++i];
                 if (command == "place_armies")
                 {
-                    Region region = Map.Current.Regions.Where(r => r.Id == int.Parse(parts[++i])).FirstOrDefault();
+                    i++;
+                    Region region = Map.Current.Regions.Where(r => r.Id == int.Parse(parts[i])).FirstOrDefault();
                     int armies = int.Parse(parts[++i]);
-                    opponentPlaceArmies.Add(new PlaceArmies(armies, region);
+                    opponentPlaceArmies.Add(new PlaceArmies(armies, region));
                 }
                 else if (command == "attack/transfer")
                 {
-                    Region regionSource = Map.Current.Regions.Where(r => r.Id == int.Parse(parts[++i])).FirstOrDefault();
-                    Region regionTarget = Map.Current.Regions.Where(r => r.Id == int.Parse(parts[++i])).FirstOrDefault();
+                    i++;
+                    Region regionSource = Map.Current.Regions.Where(r => r.Id == int.Parse(parts[i])).FirstOrDefault();
+                    i++;
+                    Region regionTarget = Map.Current.Regions.Where(r => r.Id == int.Parse(parts[i])).FirstOrDefault();
                     int armies = int.Parse(parts[++i]);
                     opponentAttackTransfer.Add(new AttackTransfer(armies, regionSource, regionTarget));
                 }
@@ -333,7 +353,17 @@ namespace BollieAI2.Services
         /// </summary>
         /// <param name="parts"></param>
         public void PlaceArmies(String[] parts)
-        { 
+        {
+            List<PlaceArmies> Pas = StrategyPlaceArmies.SelectPlaceArmies();
+            if (Pas.Count() == 0)
+            {
+                Console.WriteLine("No moves");
+            }
+            else
+            {
+                Console.WriteLine(String.Join(",",Pas.Select(pa => pa.ToString())));
+            }
+            
         }
 
         /// <summary>
@@ -342,6 +372,16 @@ namespace BollieAI2.Services
         /// <param name="parts"></param>
         public void AttackTransfer(String[] parts)
         {
+            List<AttackTransfer> ats = StrategyAttackTransfer.GetAttackTransferList();
+            if (ats.Count() == 0)
+            {
+                Console.WriteLine("No moves");
+            }
+            else
+            {
+                Console.WriteLine(String.Join(",", ats.Select(at => at.ToString())));
+            }
+            // ERROR
         }
 
 

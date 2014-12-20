@@ -53,10 +53,11 @@
     <Compile Include="Services\Combat.cs" />
     <Compile Include="Services\CurrentUpdate.cs" />
     <Compile Include="Services\Parser.cs" />
-    <Compile Include="Services\PickStartingRegions.cs" />
+    <Compile Include="Services\StartingRegions.cs" />
     <Compile Include="Services\PlaceArmies.cs" />
     <Compile Include="Board\MapUpdate.cs" />
-    <Compile Include="Strategy\Dijkstra.cs" />
+    <Compile Include="Strategy\StrategyAttackTransfer.cs" />
+    <Compile Include="Strategy\StrategyPlaceArmies.cs" />
     <Compile Include="Strategy\StrategySuperRegion.cs" />
   </ItemGroup>
   <ItemGroup>

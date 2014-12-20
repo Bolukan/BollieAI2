@@ -50,7 +50,7 @@ namespace BollieAI2.Board
         /// <summary>
         /// Pick starting region in this SuperRegion
         /// </summary>
-        public Region PickStartingRegion { get; set; }
+        public Region StartingRegion { get; set; }
 
         #region Assess
 
