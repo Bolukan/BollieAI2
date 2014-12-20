@@ -64,17 +64,21 @@ namespace BollieAI2.Strategy
                         // opponent seen SuperRegion
                         if (RegionOpponent.Count() != 0)
                         {
+                            // also Neutral Regions
                             if (RegionNeutral.Count() != 0)
                             {
+                                // we have some time left
                                 SR.StrategySuperRegion = StrategySuperRegionType.KeepWatch;
                             }
                             else
                             {
+                                // they seem to have control, attack asap
                                 SR.StrategySuperRegion = StrategySuperRegionType.Attack;
                             }
                         }
                         else
                         {
+                            // no idea what is going on there
                             SR.StrategySuperRegion = StrategySuperRegionType.Unknown;
                         }
                     }

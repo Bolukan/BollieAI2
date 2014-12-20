@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using BollieAI2;
 
 namespace BollieAI2
 {
@@ -9,9 +7,16 @@ namespace BollieAI2
     {
         static void Main(string[] args)
         {
-            Services.Combat.test();
-            Console.ReadLine();
-
+            try
+            {
+                var debug = args.Length == 1 && args[0].Equals("debug", StringComparison.OrdinalIgnoreCase);
+                new Bot().Run(debug);
+            }
+            catch (Exception ex)
+            {
+                var exitMsg = ex.Message + (ex.InnerException != null ? ex.InnerException.Message : "");
+                Console.Error.Write("Bot crashed. Exception was: {0}", exitMsg);
+            }
         }
     }
 }
