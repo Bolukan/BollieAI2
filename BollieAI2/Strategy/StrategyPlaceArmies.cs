@@ -23,7 +23,11 @@ namespace BollieAI2.Strategy
                 // Find SR with less regions to combat
                 SuperRegion sr_BEST = sr_MIXED.OrderBy(sr => (sr.Regions.Count(R => R.CurrentPlayer !=  PlayerType.Me))).First();
                 //
-                PA.Add(new PlaceArmies(Map.Current.GetArmies(), MixedRegion(sr_BEST)));
+                Region placeRegion = MixedRegion(sr_BEST);
+                int placeArmies = Map.Current.GetArmies();
+                placeRegion.CurrentArmies += placeArmies;
+                PA.Add(new PlaceArmies(placeArmies, placeRegion));
+
             }
             
             // Find SuperRegions with opponents
@@ -33,7 +37,10 @@ namespace BollieAI2.Strategy
                     .OrderByDescending(R => R.Neighbours.Count(N => N.CurrentPlayer == PlayerType.Opponent)).ToList();
                 if (Rs.Count() > 0)
                 {
-                    PA.Add(new PlaceArmies(Map.Current.GetArmies(), Rs.First()));
+                    Region placeRegion = Rs.First();
+                    int placeArmies = Map.Current.GetArmies();
+                    placeRegion.CurrentArmies += placeArmies;
+                    PA.Add(new PlaceArmies(placeArmies, placeRegion));
                 }
             }
 
@@ -44,7 +51,10 @@ namespace BollieAI2.Strategy
                     .OrderByDescending(R => R.Neighbours.Count(N => N.CurrentPlayer != PlayerType.Me)).ToList();
                 if (Rs.Count() > 0)
                 {
-                    PA.Add(new PlaceArmies(Map.Current.GetArmies(), Rs.First()));
+                    Region placeRegion = Rs.First();
+                    int placeArmies = Map.Current.GetArmies();
+                    placeRegion.CurrentArmies += placeArmies;
+                    PA.Add(new PlaceArmies(placeArmies, placeRegion));
                 }
             }
 

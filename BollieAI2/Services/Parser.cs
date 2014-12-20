@@ -354,6 +354,10 @@ namespace BollieAI2.Services
         /// <param name="parts"></param>
         public void PlaceArmies(String[] parts)
         {
+            CurrentUpdate.UpdateRegion();
+            CurrentUpdate.UpdateSuperRegion();
+            CurrentUpdate.UpdateMap();
+                        
             List<PlaceArmies> Pas = StrategyPlaceArmies.SelectPlaceArmies();
             if (Pas.Count() == 0)
             {

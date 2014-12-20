@@ -23,9 +23,9 @@ namespace BollieAI2.Strategy
                 // find opponent neighbours (biggest first)
                 IEnumerable<Region> ros = rm.Neighbours.Where(N => N.CurrentPlayer == PlayerType.Opponent)
                     .OrderByDescending(N => N.CurrentArmies);
-                if (ros.Count() > 0)
+                if (ros.Any())
                 {
-                    int maxOpponent = ros.First().CurrentArmies;
+                    int maxOpponent = ros.FirstOrDefault().CurrentArmies;
 
                     foreach (Region ro in ros)
                     {
@@ -41,8 +41,11 @@ namespace BollieAI2.Strategy
                     // find neutral neighbours (biggest first)
                     IEnumerable<Region> rns = rm.Neighbours.Where(N => N.CurrentPlayer == PlayerType.Neutral)
                         .OrderByDescending(N => N.CurrentArmies);
-                    int maxOpponent = rns.First().CurrentArmies;
-
+                    if (rns.Any())
+                    {
+                        int maxOpponent = rns.FirstOrDefault().CurrentArmies;
+                    }
+                    
                     foreach (Region rn in rns)
                     {
                         if (rm.CurrentArmies >= (2 * rn.CurrentArmies))

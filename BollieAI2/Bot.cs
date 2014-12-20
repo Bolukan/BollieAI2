@@ -31,7 +31,7 @@ namespace BollieAI2
         {
             if (debug)
             {
-                foreach (var line in File.ReadAllLines(@"Z:\BollieAI2\test.txt"))
+                foreach (var line in File.ReadAllLines(@"Z:\BollieAI2\test2.txt"))
                 {
                     parser.Parse(line);
                 }
