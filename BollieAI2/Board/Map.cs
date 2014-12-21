@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Diagnostics;
 using BollieAI2.Services;
 
@@ -20,6 +19,7 @@ namespace BollieAI2.Board
             SuperRegions = new List<SuperRegion>();
             Regions = new List<Region>();
             Wastelands = new List<Region>();
+            Connections = new List<Connection>();
         }
 
         /// <summary>
@@ -57,6 +57,11 @@ namespace BollieAI2.Board
         /// Wastelands are neutral regions with more than 2 armies on them. 
         /// </summary>
         public List<Region> Wastelands { get; set; }
+
+        /// <summary>
+        /// Connections are define 2 Regions as neighbours
+        /// </summary>
+        public List<Connection> Connections { get; set; }
 
         /// <summary>
         /// At the start of the game, the engine will make a list of regions by picking one random region from each super region.

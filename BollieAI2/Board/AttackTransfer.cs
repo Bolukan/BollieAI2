@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using BollieAI2.Board;
 
-namespace BollieAI2.Services
+namespace BollieAI2.Board
 {
     /// <summary>
     /// Command to Attack or Transfer armies

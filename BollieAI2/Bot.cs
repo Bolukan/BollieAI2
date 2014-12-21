@@ -32,8 +32,7 @@ namespace BollieAI2
         {
             if (debug)
             {
-                
-                foreach (var line in File.ReadAllLines(@"Z:\BollieAI2\test.txt"))
+                foreach (var line in File.ReadAllLines(@"Z:\BollieAI2\5496ee3a4b5ab240b7144ea2.txt"))
                 {
                     parser.Parse(line);
                 }

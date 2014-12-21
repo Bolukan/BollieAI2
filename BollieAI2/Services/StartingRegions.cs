@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 using BollieAI2.Board;
-using System.IO;
 
 namespace BollieAI2.Services
 {
@@ -21,12 +20,10 @@ namespace BollieAI2.Services
         /// Process all possible Starting Regions
         /// </summary>
         /// <param name="pickRegions"></param>
-        public static void SetStartingRegions(List<Region> startingRegions)
+        public static void SetStartingRegions()
         {
-            // save them all
-            Map.Current.StartingRegions = startingRegions;
             // and in each superregion
-            startingRegions.ForEach(r =>
+            Map.Current.StartingRegions.ForEach(r =>
                 {
                     r.SuperRegion.StartingRegion = r;
                 }
