@@ -25,15 +25,11 @@ namespace BollieAI2.Strategy
                     .OrderByDescending(N => N.CurrentArmies);
                 if (ros.Any())
                 {
-                    int maxOpponent = ros.FirstOrDefault().CurrentArmies;
-
-                    foreach (Region ro in ros)
-                    {
-                        if (rm.CurrentArmies >= (2 * ro.CurrentArmies) && (rm.CurrentArmies >= maxOpponent))
+                        if (rm.CurrentArmies - 1 > ros.First().ArmiesToAttack)
                         {
-                            AT.Add(AddAttack(rm, ro, (ro.CurrentArmies * 2 - 1)));
+                            AT.Add(AddAttack(rm, ros.First(), ros.First().ArmiesToAttack));
                         }
-                    }
+                    
                 }
                 else
                 {
@@ -62,7 +58,6 @@ namespace BollieAI2.Strategy
 
         private static AttackTransfer AddAttack(Region regionSource, Region regionTarget, int armies)
         {
-            if (armies == 1) armies = 2;
             regionSource.CurrentArmies -= armies;
             return new AttackTransfer(armies, regionSource, regionTarget);
         }

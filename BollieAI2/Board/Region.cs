@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using BollieAI2.Services;
 
 namespace BollieAI2.Board
 {
@@ -49,6 +48,17 @@ namespace BollieAI2.Board
         /// Armies in region
         /// </summary>
         public int CurrentArmies { get; set; }
+
+        /// <summary>
+        /// 95% or more success in attack of this region
+        /// </summary>
+        public int ArmiesToAttack
+        {
+            get
+            {
+                return Combat.AttackersNeeded(CurrentArmies);
+            }
+        }
         
         #endregion
 

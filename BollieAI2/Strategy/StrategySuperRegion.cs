@@ -37,7 +37,7 @@ namespace BollieAI2.Strategy
                     IEnumerable<Region> RegionMe = SR.RegionsPlayer(PlayerType.Me);
                     IEnumerable<Region> RegionOpponent = SR.RegionsPlayer(PlayerType.Opponent);
                     IEnumerable<Region> RegionNeutral = SR.RegionsPlayer(PlayerType.Neutral);
-                    IEnumerable<Region> RegionUnknown = SR.RegionsPlayer(PlayerType.Unknown);
+                    // IEnumerable<Region> RegionUnknown = SR.RegionsPlayer(PlayerType.Unknown);
                     
                     // all me
                     if (RegionMe.Count() == SR.Regions.Count())
