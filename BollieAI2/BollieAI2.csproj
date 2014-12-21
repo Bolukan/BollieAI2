@@ -46,6 +46,7 @@
     <Compile Include="Board\Map.cs" />
     <Compile Include="Board\Player.cs" />
     <Compile Include="Board\Region.cs" />
+    <Compile Include="Board\Regions.cs" />
     <Compile Include="Board\SuperRegion.cs" />
     <Compile Include="Bot.cs" />
     <Compile Include="Program.cs" />

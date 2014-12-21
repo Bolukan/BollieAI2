@@ -33,8 +33,9 @@ namespace BollieAI2.Strategy
             // Find SuperRegions with opponents
             if (Map.Current.StartingArmies > 0)
             {
-                List<Region> Rs = Map.Current.Regions.Where(R => R.CurrentPlayer == PlayerType.Me)
-                    .OrderByDescending(R => R.Neighbours.Count(N => N.CurrentPlayer == PlayerType.Opponent)).ToList();
+                IEnumerable<Region> Rs = Map.Current.Regions.Player(PlayerType.Me)
+                    .OrderByDescending(r1 => r1.Neighbours.Count(N => N.CurrentPlayer == PlayerType.Opponent));
+                
                 if (Rs.Count() > 0)
                 {
                     Region placeRegion = Rs.First();
@@ -47,8 +48,8 @@ namespace BollieAI2.Strategy
             // Find SuperRegions with neutral
             if (Map.Current.StartingArmies > 0)
             {
-                List<Region> Rs = Map.Current.Regions.Where(R => R.CurrentPlayer == PlayerType.Me)
-                    .OrderByDescending(R => R.Neighbours.Count(N => N.CurrentPlayer != PlayerType.Me)).ToList();
+                IEnumerable<Region> Rs = Map.Current.Regions.Player(PlayerType.Me)
+                    .OrderByDescending(r => r.Neighbours.Count(N => N.CurrentPlayer != PlayerType.Me));
                 if (Rs.Count() > 0)
                 {
                     Region placeRegion = Rs.First();

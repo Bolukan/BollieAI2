@@ -33,10 +33,10 @@ namespace BollieAI2.Strategy
             Map.Current.SuperRegions.ForEach(SR =>
                 {
                     // count amount per players
-                    IEnumerable<Region> RegionMe = SR.RegionsPlayer(PlayerType.Me);
-                    IEnumerable<Region> RegionOpponent = SR.RegionsPlayer(PlayerType.Opponent);
-                    IEnumerable<Region> RegionNeutral = SR.RegionsPlayer(PlayerType.Neutral);
-                    // IEnumerable<Region> RegionUnknown = SR.RegionsPlayer(PlayerType.Unknown);
+                    IEnumerable<Region> RegionMe = SR.Regions.Player(PlayerType.Me);
+                    IEnumerable<Region> RegionOpponent = SR.Regions.Player(PlayerType.Opponent);
+                    IEnumerable<Region> RegionNeutral = SR.Regions.Player(PlayerType.Neutral);
+                    // IEnumerable<Region> RegionUnknown = SR.Regions.Player(PlayerType.Unknown);
                     
                     // all me
                     if (RegionMe.Count() == SR.Regions.Count())

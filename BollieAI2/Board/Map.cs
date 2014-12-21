@@ -17,8 +17,8 @@ namespace BollieAI2.Board
         public Map()
         {
             SuperRegions = new List<SuperRegion>();
-            Regions = new List<Region>();
-            Wastelands = new List<Region>();
+            Regions = new Regions();
+            Wastelands = new Regions();
             Connections = new List<Connection>();
         }
 
@@ -51,12 +51,12 @@ namespace BollieAI2.Board
         /// <summary>
         /// Regions
         /// </summary>
-        public List<Region> Regions { get; set; }
+        public Regions Regions { get; set; }
 
         /// <summary>
         /// Wastelands are neutral regions with more than 2 armies on them. 
         /// </summary>
-        public List<Region> Wastelands { get; set; }
+        public Regions Wastelands { get; set; }
 
         /// <summary>
         /// Connections are define 2 Regions as neighbours
@@ -70,7 +70,7 @@ namespace BollieAI2.Board
         /// If there is an uneven amount of regions to be picked from, the last region remaining will be a neutral, 
         /// so both players have an equal amount of starting regions.
         /// </summary>
-        public List<Region> StartingRegions { get; set; }
+        public Regions StartingRegions { get; set; }
 
         /// <summary>
         /// The maximum (and initial) amount of time in the timebank is given in ms

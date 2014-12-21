@@ -40,7 +40,7 @@ namespace BollieAI2.Services
         /// Pick the best region
         /// </summary>
         /// <param name="pickRegions">Available regions</param>
-        public static Region PickFromRegions(List<Region> pickRegions)
+        public static Region PickFromRegions(Regions pickRegions)
         {
             return pickRegions.OrderByDescending(r => r.SuperRegion.CurrentValue).FirstOrDefault();
         }

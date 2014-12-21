@@ -208,14 +208,11 @@ namespace BollieAI2.Services
             for (int i = 2; i < parts.Length; i++)
             {
                 // first region
-                int regionId = int.Parse(parts[i]);
-                Region firstRegion = Map.Current.Regions
-                    .Find(region => region.Id == regionId);
+                Region firstRegion = Map.Current.Regions.GetId(parts[i]);
 
                 // list of second regions
                 String[] neighborStrings = parts[++i].Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                IEnumerable<Region> neighborRegions = neighborStrings
-                    .Select(n => Map.Current.Regions.Find(region => region.Id == int.Parse(n)));
+                IEnumerable<Region> neighborRegions = neighborStrings.Select(n => Map.Current.Regions.GetId(n));
 
                 // connect them
                 foreach(Region secondRegion in neighborRegions)
@@ -238,8 +235,7 @@ namespace BollieAI2.Services
         {
             for (int i = 2; i < parts.Length; i++)
             {
-                int regionId = int.Parse(parts[i]);
-                Region wasteland = Map.Current.Regions.Find(region => region.Id == regionId);
+                Region wasteland = Map.Current.Regions.GetId(parts[i]);
 
                 Map.Current.Wastelands.Add(wasteland);
 
@@ -257,7 +253,7 @@ namespace BollieAI2.Services
         public void StartingRegions(String[] parts)
         {
             // read possible regions
-            List<Region> startingRegions = new List<Region>();
+            Regions startingRegions = new Regions();
             for (int i = 2; i < parts.Length; i++)
             {
                 startingRegions.Add(Map.Current.Regions.Find(region => region.Id == int.Parse(parts[i])));
@@ -279,10 +275,10 @@ namespace BollieAI2.Services
             Map.Current.CurrentTimebank = int.Parse(parts[1]);
 
             // read possible regions
-            List<Region> pickRegions = new List<Region>();
+            Regions pickRegions = new Regions();
             for (int i = 2; i < parts.Length; i++)
             {
-                Region pickRegion = Map.Current.Regions.Where(region => region.Id == int.Parse(parts[i])).FirstOrDefault();
+                Region pickRegion = Map.Current.Regions.Find(region => region.Id == int.Parse(parts[i]));
                 pickRegions.Add(pickRegion);
             }
 
@@ -302,7 +298,7 @@ namespace BollieAI2.Services
         {
             for (int i = 2; i < parts.Length; i++)
             {
-                Region region = Map.Current.Regions.Where(r => r.Id == int.Parse(parts[i])).FirstOrDefault();
+                Region region = Map.Current.Regions.Find(r => r.Id == int.Parse(parts[i]));
                 region.CurrentPlayer = PlayerType.Opponent;
             }
         }
@@ -333,7 +329,7 @@ namespace BollieAI2.Services
             List<MapUpdate> mapUpdates = new List<MapUpdate>();
             for (int i = 1; i < parts.Length; i++)
             {
-                Region regionUpdate = Map.Current.Regions.Where(region => region.Id == int.Parse(parts[i])).FirstOrDefault();
+                Region regionUpdate = Map.Current.Regions.Find(region => region.Id == int.Parse(parts[i]));
                 PlayerType playerUpdate = Player.PlayerId(parts[++i]);
                 int armiesUpdate = int.Parse(parts[++i]);
                 mapUpdates.Add(new MapUpdate(regionUpdate, playerUpdate, armiesUpdate));
