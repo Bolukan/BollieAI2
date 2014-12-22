@@ -64,11 +64,11 @@ namespace BollieAI2.Strategy
             }
 
             // move armies to front
-            IEnumerable<Region> saveArea = Map.Current.Regions.Where(R => R.DangerousBorderDistance > 1 && R.CurrentArmies > 1);
+            IEnumerable<Region> saveArea = Map.Current.Regions.Where(R => R.DangerousBorderDistance > 1 && R.CurrentArmies > 1 && R.CurrentPlayer.Is(PlayerType.Me));
             foreach (Region saveRegion in saveArea)
             {
                 IEnumerable<Region> buren = saveRegion.Neighbours
-                    .Where(N => N.CurrentPlayer.In(PlayerType.Me) && (N.DangerousBorderDistance <= saveRegion.DangerousBorderDistance))
+                    .Where(N => N.CurrentPlayer.In(PlayerType.Me) && (N.DangerousBorderDistance < saveRegion.DangerousBorderDistance))
                     .OrderBy(N => N.DangerousBorderDistance);
                 if (buren.Any())
                 {
