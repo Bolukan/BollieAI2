@@ -35,9 +35,11 @@ namespace BollieAI2.Strategy
                 if (ros.Any())
                 {
 
-                        if (rm.CurrentArmies - 1 > ros.First().ArmiesToAttack)
+                        while (rm.CurrentArmies - 1 > ros.First().ArmiesToAttack)
                         {
-                            AT.Add(AddAttack(rm, ros.First(), Combat.AttackersNeeded(ros.First().CurrentArmies+5)));
+                            AT.Add(AddAttack(rm, ros.First(), 
+                                Math.Max(rm.CurrentArmies / rm.Neighbours.Count(N => N.CurrentPlayer.In(PlayerType.NotMe)), 
+                                Combat.AttackersNeeded(ros.First().CurrentArmies + 5))));
                         }
                     
                 }
