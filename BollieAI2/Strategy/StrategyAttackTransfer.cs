@@ -4,6 +4,7 @@ using System.Linq;
 
 using BollieAI2.Services;
 using BollieAI2.Board;
+using BollieAI2.Helpers;
 
 namespace BollieAI2.Strategy
 {
@@ -29,7 +30,7 @@ namespace BollieAI2.Strategy
             foreach (Region rm in regionsMe)
             {
                 // find opponent neighbours (biggest first)
-                IEnumerable<Region> ros = rm.Neighbours.Where(N => N.CurrentPlayer == PlayerType.Opponent)
+                IEnumerable<Region> ros = rm.Neighbours.Where(N => N.CurrentPlayer.Is(PlayerType.Opponent))
                     .OrderByDescending(N => N.CurrentArmies);
                 if (ros.Any())
                 {
@@ -42,9 +43,9 @@ namespace BollieAI2.Strategy
                 }
                 else
                 {
-
+                    
                     // find neutral neighbours (biggest first)
-                    IEnumerable<Region> rns = rm.Neighbours.Where(N => N.CurrentPlayer == PlayerType.Neutral)
+                    IEnumerable<Region> rns = rm.Neighbours.Where(N => N.CurrentPlayer.Is(PlayerType.Neutral))
                         .OrderByDescending(N => N.CurrentArmies);
                     if (rns.Any())
                     {
@@ -62,6 +63,20 @@ namespace BollieAI2.Strategy
                 }
             }
 
+            // move armies to front
+            IEnumerable<Region> saveArea = Map.Current.Regions.Where(R => R.DangerousBorderDistance > 1 && R.CurrentArmies > 1);
+            foreach (Region saveRegion in saveArea)
+            {
+                IEnumerable<Region> buren = saveRegion.Neighbours
+                    .Where(N => N.CurrentPlayer.In(PlayerType.Me) && (N.DangerousBorderDistance <= saveRegion.DangerousBorderDistance))
+                    .OrderBy(N => N.DangerousBorderDistance);
+                if (buren.Any())
+                {
+                    AT.Add(AddAttack(saveRegion, buren.First(), saveRegion.CurrentArmies - 1));
+                }
+
+            }
+
             return AT;
         }
 
@@ -72,8 +87,8 @@ namespace BollieAI2.Strategy
         private static IEnumerable<Connection> MeOther()
         {
             return Map.Current.Connections.Where(C => 
-                   C.SourceRegion.CurrentPlayer == PlayerType.Me 
-                && C.TargetRegion.CurrentPlayer != PlayerType.Me);
+                   C.SourceRegion.CurrentPlayer.Is(PlayerType.Me) 
+                && C.TargetRegion.CurrentPlayer.In(PlayerType.NotMe));
         }
 
         /// <summary>
@@ -94,7 +109,7 @@ namespace BollieAI2.Strategy
         /// <returns></returns>
         private static IEnumerable<Connection> OpponentMeConnections()
         {
-            return Map.Current.Connections.Where(C => C.SourceRegion.CurrentPlayer == PlayerType.Me && C.TargetRegion.CurrentPlayer == PlayerType.Opponent);
+            return Map.Current.Connections.Where(C => C.SourceRegion.CurrentPlayer.Is(PlayerType.Me) && C.TargetRegion.CurrentPlayer.Is(PlayerType.Opponent));
         }
 
         /// <summary>
@@ -104,7 +119,7 @@ namespace BollieAI2.Strategy
         private static IEnumerable<Connection> OpponentMeConnectionsMin()
         {
             return OpponentMeConnections()
-                .Where(C => C.SourceRegion.Neighbours.Count(N => N.CurrentPlayer == PlayerType.Opponent) == 1);
+                .Where(C => C.SourceRegion.Neighbours.Count(N => N.CurrentPlayer.Is(PlayerType.Opponent)) == 1);
         }
 
 

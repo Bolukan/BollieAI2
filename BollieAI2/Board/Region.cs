@@ -8,7 +8,7 @@ namespace BollieAI2.Board
     /// <summary>
     /// 
     /// </summary>
-    public class Region
+    public partial class Region
     {
         /// <summary>
         /// Initialise
@@ -39,6 +39,11 @@ namespace BollieAI2.Board
         public Regions Neighbours { get; set; }
         
         #region Turnbased
+
+        /// <summary>
+        /// region is seen (update_map)
+        /// </summary>
+        public bool IsVisible { get; set; }
 
         /// <summary>
         /// Player in charge of region

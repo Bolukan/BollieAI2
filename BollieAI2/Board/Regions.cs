@@ -29,7 +29,7 @@ namespace BollieAI2.Board
         /// <returns>Regions</returns>
         public IEnumerable<Region> Player(PlayerType wherePlayer)
         {
-            return this.Where(region => region.CurrentPlayer == wherePlayer);
+            return this.Where(region => ((region.CurrentPlayer & wherePlayer) == region.CurrentPlayer));
         }
 
         /// <summary>

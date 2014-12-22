@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BollieAI2.Helpers;
 
 namespace BollieAI2.Board
 {
@@ -13,7 +14,8 @@ namespace BollieAI2.Board
         Neutral = 0x02,
         Me = 0x04,
         Opponent = 0x08,
-        NotMe = Unknown | Neutral | Opponent ,
+        NotMe = Unknown | Neutral | Opponent,
+        Dangerous = Unknown | Opponent,
         All = NotMe | Me
     }
 
@@ -34,6 +36,9 @@ namespace BollieAI2.Board
             if (name == Map.Current.OpponentBot) return PlayerType.Opponent;
             return PlayerType.Unknown;
         }
+
     }
+
+
 
 }

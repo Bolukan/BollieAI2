@@ -315,6 +315,7 @@ namespace BollieAI2.Services
         public void StartingArmies(String[] parts)
         {
             Map.Current.StartingArmies = int.Parse(parts[2]);
+            Map.Current.Round++;
         }
 
         /// <summary>
@@ -329,12 +330,12 @@ namespace BollieAI2.Services
             List<MapUpdate> mapUpdates = new List<MapUpdate>();
             for (int i = 1; i < parts.Length; i++)
             {
-                Region regionUpdate = Map.Current.Regions.Find(region => region.Id == int.Parse(parts[i]));
+                Region regionUpdate = Map.Current.Regions.GetId(parts[i]);
                 PlayerType playerUpdate = Player.PlayerId(parts[++i]);
                 int armiesUpdate = int.Parse(parts[++i]);
                 mapUpdates.Add(new MapUpdate(regionUpdate, playerUpdate, armiesUpdate));
             }
-
+            // Save updates for implementation AFTER OpponentMoves
             Map.Current.MapUpdates = mapUpdates;
             
         }

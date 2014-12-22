@@ -49,11 +49,14 @@
     <Compile Include="Board\Regions.cs" />
     <Compile Include="Board\SuperRegion.cs" />
     <Compile Include="Bot.cs" />
+    <Compile Include="Helpers\EnumExtender.cs" />
+    <Compile Include="Board\Region_Floods.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Board\AttackTransfer.cs" />
-    <Compile Include="Services\Combat.cs" />
+    <Compile Include="Helpers\Combat.cs" />
     <Compile Include="Services\CurrentUpdate.cs" />
+    <Compile Include="Services\FloodsCalculation.cs" />
     <Compile Include="Services\Parser.cs" />
     <Compile Include="Services\StartingRegions.cs" />
     <Compile Include="Board\PlaceArmies.cs" />

@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BollieAI2.Board
+using BollieAI2.Board;
+using BollieAI2.Helpers;
+
+namespace BollieAI2.Services
 {
     /// <summary>
     /// Update map info
@@ -65,6 +68,9 @@ namespace BollieAI2.Board
         {
             Map.Current.Regions.ForEach(r =>
                 {
+                    // reset Visible (map_update)
+                    r.IsVisible = false;
+
                     // lower expected armies for invisible opponent regions
                     // -20% each turn, but not lower than 1 or 2 
                     if (r.CurrentPlayer == PlayerType.Opponent)
@@ -73,8 +79,7 @@ namespace BollieAI2.Board
                     }
                     
                     // change playerType
-                    if (r.CurrentPlayer == PlayerType.Me ||
-                        r.CurrentPlayer == PlayerType.Neutral)
+                    if (r.CurrentPlayer.In(PlayerType.Me | PlayerType.Neutral))
                         r.CurrentPlayer = PlayerType.Unknown;
                 }
             );
@@ -82,10 +87,14 @@ namespace BollieAI2.Board
             // update map
             Map.Current.MapUpdates.ForEach(mu =>
                 {
+                    mu.Region.IsVisible = true;
                     mu.Region.CurrentPlayer = mu.Player;
                     mu.Region.CurrentArmies = mu.Armies;
                 }
             );
+
+            // Flood border
+            FloodsCalculation.CalcDangerousBorderDistance();
 
         }
    }

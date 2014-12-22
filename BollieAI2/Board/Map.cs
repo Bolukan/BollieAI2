@@ -20,6 +20,7 @@ namespace BollieAI2.Board
             Regions = new Regions();
             Wastelands = new Regions();
             Connections = new List<Connection>();
+            Round = 0;
         }
 
         /// <summary>
@@ -143,6 +144,11 @@ namespace BollieAI2.Board
         /// Map updates
         /// </summary>
         public List<MapUpdate> MapUpdates { get; set; }
+
+        /// <summary>
+        /// Round of <see cref="MaxRounds"/>
+        /// </summary>
+        public int Round { get; set; }
 
         #endregion
     }
