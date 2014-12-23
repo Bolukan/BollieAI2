@@ -34,14 +34,20 @@ namespace BollieAI2.Strategy
                     .OrderByDescending(N => N.CurrentArmies);
                 if (ros.Any())
                 {
-
-                        while (rm.CurrentArmies - 1 > ros.First().ArmiesToAttack)
+                    foreach (Region ro in ros)
+                    {
+                        int goNext = 2;
+                        if ((goNext > 0) && (rm.CurrentArmies > ro.ArmiesToAttack))
                         {
-                            AT.Add(AddAttack(rm, ros.First(), 
-                                Math.Max(rm.CurrentArmies / rm.Neighbours.Count(N => N.CurrentPlayer.In(PlayerType.NotMe)), 
-                                Combat.AttackersNeeded(ros.First().CurrentArmies + 5))));
+                            AT.Add(AddAttack(rm, ro,
+                                Math.Max(rm.CurrentArmies / rm.Neighbours.Count(N => N.CurrentPlayer.In(PlayerType.NotMe)),
+                                Combat.AttackersNeeded(ro.CurrentArmies + 5))));
                         }
-                    
+                        else
+                        {
+                            goNext--;
+                        }
+                    }
                 }
                 else
                 {
@@ -66,11 +72,17 @@ namespace BollieAI2.Strategy
             }
 
             // move armies to front
-            IEnumerable<Region> saveArea = Map.Current.Regions.Where(R => R.DangerousBorderDistance > 1 && R.CurrentArmies > 1 && R.CurrentPlayer.Is(PlayerType.Me));
+            IEnumerable<Region> saveArea = Map.Current.Regions.Where(R => 
+                (R.CurrentPlayer.Is(PlayerType.Me)) &&
+                (R.CurrentArmies > 1) && 
+                (R.DangerousBorderDistance > 1));
+            
             foreach (Region saveRegion in saveArea)
             {
                 IEnumerable<Region> buren = saveRegion.Neighbours
-                    .Where(N => N.CurrentPlayer.In(PlayerType.Me) && (N.DangerousBorderDistance < saveRegion.DangerousBorderDistance))
+                    .Where(N => 
+                        N.CurrentPlayer.In(PlayerType.Me) && 
+                        (N.DangerousBorderDistance < saveRegion.DangerousBorderDistance))
                     .OrderBy(N => N.DangerousBorderDistance);
                 if (buren.Any())
                 {
@@ -111,7 +123,9 @@ namespace BollieAI2.Strategy
         /// <returns></returns>
         private static IEnumerable<Connection> OpponentMeConnections()
         {
-            return Map.Current.Connections.Where(C => C.SourceRegion.CurrentPlayer.Is(PlayerType.Me) && C.TargetRegion.CurrentPlayer.Is(PlayerType.Opponent));
+            return Map.Current.Connections.Where(C => 
+                C.SourceRegion.CurrentPlayer.Is(PlayerType.Me) && 
+                C.TargetRegion.CurrentPlayer.Is(PlayerType.Opponent));
         }
 
         /// <summary>
