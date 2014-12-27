@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using BollieAI2.Services;
-using BollieAI2.Board;
+using BollieAI2.Model;
 
 namespace BollieAI2.Strategy
 {
@@ -24,14 +24,14 @@ namespace BollieAI2.Strategy
                 SuperRegion sr_BEST = sr_MIXED.OrderBy(sr => (sr.Regions.Count(R => R.CurrentPlayer !=  PlayerType.Me))).First();
                 //
                 Region placeRegion = MixedRegion(sr_BEST);
-                int placeArmies = Map.Current.GetArmies();
+                int placeArmies = Map.MapState.ReserveArmies(9999);
                 placeRegion.CurrentArmies += placeArmies;
                 PA.Add(new PlaceArmies(placeArmies, placeRegion));
 
             }
             
             // Find SuperRegions with opponents
-            if (Map.Current.StartingArmies > 0)
+            if (Map.MapState.ArmiesAvailable() > 0)
             {
                 IEnumerable<Region> Rs = Map.Current.Regions.Player(PlayerType.Me)
                     .OrderByDescending(r1 => r1.Neighbours.Count(N => N.CurrentPlayer == PlayerType.Opponent));
@@ -39,21 +39,21 @@ namespace BollieAI2.Strategy
                 if (Rs.Count() > 0)
                 {
                     Region placeRegion = Rs.First();
-                    int placeArmies = Map.Current.GetArmies();
+                    int placeArmies = Map.MapState.ReserveArmies(9999);
                     placeRegion.CurrentArmies += placeArmies;
                     PA.Add(new PlaceArmies(placeArmies, placeRegion));
                 }
             }
 
             // Find SuperRegions with neutral
-            if (Map.Current.StartingArmies > 0)
+            if (Map.MapState.ArmiesAvailable() > 0)
             {
                 IEnumerable<Region> Rs = Map.Current.Regions.Player(PlayerType.Me)
                     .OrderByDescending(r => r.Neighbours.Count(N => N.CurrentPlayer != PlayerType.Me));
                 if (Rs.Count() > 0)
                 {
                     Region placeRegion = Rs.First();
-                    int placeArmies = Map.Current.GetArmies();
+                    int placeArmies = Map.MapState.ReserveArmies(9999);
                     placeRegion.CurrentArmies += placeArmies;
                     PA.Add(new PlaceArmies(placeArmies, placeRegion));
                 }

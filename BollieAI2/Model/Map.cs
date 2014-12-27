@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
-using BollieAI2.Services;
 
-namespace BollieAI2.Board
+using BollieAI2.Services;
+using BollieAI2.Strategy;
+using BollieAI2.State;
+
+namespace BollieAI2.Model
 {
     /// <summary>
     /// 
@@ -16,17 +19,21 @@ namespace BollieAI2.Board
         /// </summary>
         public Map()
         {
-            SuperRegions = new List<SuperRegion>();
             Regions = new Regions();
+            SuperRegions = new List<SuperRegion>();
             Wastelands = new Regions();
             Connections = new List<Connection>();
-            Round = 0;
         }
 
         /// <summary>
         /// Map instance
         /// </summary>
         private static Map _instance;
+
+        /// <summary>
+        /// Roundspecific state of map
+        /// </summary>
+        private static MapState mapState;
 
         /// <summary>
         /// Map instance: "Map.Current"
@@ -43,6 +50,24 @@ namespace BollieAI2.Board
                 return _instance;
             }
         }
+
+        /// <summary>
+        /// Get the round specific state of the Map
+        /// </summary>
+        public static MapState MapState
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                if (mapState == null)
+                {
+                    mapState = new MapState();
+                }
+                return mapState;
+            }
+        }
+
+        #region Static
 
         /// <summary>
         /// Superregions are one or more regions with a bonus armies reward
@@ -98,58 +123,20 @@ namespace BollieAI2.Board
         /// </summary>
         public String OpponentBot { get; set; }
 
+        #endregion
+
+        public int MapBonusArmiesAward()
+        {
+            return SuperRegions.Sum(SR => SR.BonusArmiesAward);
+        }
+
         #region Current
 
         /// <summary>
         /// ms available for current operation
         /// </summary>
         public int CurrentTimebank;
-
-        /// <summary>
-        /// Armies to place on Map this turn
-        /// </summary>
-        public int StartingArmies { get; set; }
-
-        public int GetArmies()
-        {
-            return GetArmies(StartingArmies);
-        }
-
-        public int GetArmies(int armies)
-        {
-            if (armies > StartingArmies)
-            {
-                armies = StartingArmies;
-            }
-            StartingArmies -= StartingArmies;
-            return armies;
-        }
-
-        /// <summary>
-        /// Number of Regions for each player
-        /// </summary>
-        public Dictionary<PlayerType, int> CurrentRegionsCount;
-
-        /// <summary>
-        /// all the visible moves the opponent has done are given in consecutive order.
-        /// </summary>
-        public List<PlaceArmies> OpponentLastPlaceArmies { get; set; }
-
-        /// <summary>
-        /// all the visible moves the opponent has done are given in consecutive order.
-        /// </summary>
-        public List<AttackTransfer> OpponentLastAttackTransfer { get; set; }
-
-        /// <summary>
-        /// Map updates
-        /// </summary>
-        public List<MapUpdate> MapUpdates { get; set; }
-
-        /// <summary>
-        /// Round of <see cref="MaxRounds"/>
-        /// </summary>
-        public int Round { get; set; }
-
+        
         #endregion
     }
 }

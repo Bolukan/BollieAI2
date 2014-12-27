@@ -4,7 +4,7 @@ using System.Linq;
 
 using BollieAI2.Strategy;
 
-namespace BollieAI2.Board
+namespace BollieAI2.Model
 {
     /// <summary>
     /// Superregion is one or more regions with a bonus armies reward

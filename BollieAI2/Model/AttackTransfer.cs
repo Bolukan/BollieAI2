@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BollieAI2.Board
+namespace BollieAI2.Model
 {
     /// <summary>
     /// Command to Attack or Transfer armies
@@ -44,6 +44,17 @@ namespace BollieAI2.Board
         public override String ToString()
         {
             return String.Format("{0} attack/transfer {1} {2} {3}", Map.Current.YourBot, SourceRegion.Id, TargetRegion.Id, Armies);
+        }
+
+        /// <summary>
+        /// Hashcode voor SourceRegion en TargetRegion
+        /// </summary>
+        /// <returns>hashcode</returns>
+        public override int GetHashCode()
+        {
+            // 601 is prime
+            return SourceRegion.Id * 601 + TargetRegion.Id;
+            //return base.GetHashCode();
         }
     }
 }

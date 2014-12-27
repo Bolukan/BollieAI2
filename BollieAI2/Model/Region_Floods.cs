@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BollieAI2.Services;
 
-namespace BollieAI2.Board
+namespace BollieAI2.Model
 {
     /// <summary>
     /// Subclass for Region to contain Floods

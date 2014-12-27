@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using BollieAI2.Board;
+using BollieAI2.Model;
 using BollieAI2.Strategy;
+using BollieAI2.State;
+using BollieAI2.Simulation;
 
 namespace BollieAI2.Services
 {
@@ -314,8 +316,8 @@ namespace BollieAI2.Services
         /// <param name="parts"></param>
         public void StartingArmies(String[] parts)
         {
-            Map.Current.StartingArmies = int.Parse(parts[2]);
-            Map.Current.Round++;
+            Map.MapState.StartingArmies = int.Parse(parts[2]);
+            Map.MapState.PlacedArmies = 0;
         }
 
         /// <summary>
@@ -333,11 +335,11 @@ namespace BollieAI2.Services
                 Region regionUpdate = Map.Current.Regions.GetId(parts[i]);
                 PlayerType playerUpdate = Player.PlayerId(parts[++i]);
                 int armiesUpdate = int.Parse(parts[++i]);
+                // Add update_map
                 mapUpdates.Add(new MapUpdate(regionUpdate, playerUpdate, armiesUpdate));
             }
             // Save updates for implementation AFTER OpponentMoves
-            Map.Current.MapUpdates = mapUpdates;
-            
+            Map.MapState.MapUpdates = mapUpdates;
         }
 
         /// <summary>
@@ -356,30 +358,31 @@ namespace BollieAI2.Services
                 String command = parts[++i];
                 if (command == "place_armies")
                 {
-                    i++;
-                    Region region = Map.Current.Regions.Where(r => r.Id == int.Parse(parts[i])).FirstOrDefault();
+                    Region region = Map.Current.Regions.GetId(parts[++i]);
                     int armies = int.Parse(parts[++i]);
                     opponentPlaceArmies.Add(new PlaceArmies(armies, region));
                 }
                 else if (command == "attack/transfer")
                 {
-                    i++;
-                    Region regionSource = Map.Current.Regions.Where(r => r.Id == int.Parse(parts[i])).FirstOrDefault();
-                    i++;
-                    Region regionTarget = Map.Current.Regions.Where(r => r.Id == int.Parse(parts[i])).FirstOrDefault();
+                    Region regionSource = Map.Current.Regions.GetId(parts[++i]);
+                    Region regionTarget = Map.Current.Regions.GetId(parts[++i]);
                     int armies = int.Parse(parts[++i]);
                     opponentAttackTransfer.Add(new AttackTransfer(armies, regionSource, regionTarget));
                 }
             }
 
             // Save moves for further use
-            Map.Current.OpponentLastPlaceArmies = opponentPlaceArmies;
-            Map.Current.OpponentLastAttackTransfer = opponentAttackTransfer;
+            Map.MapState.OpponentLastPlaceArmies = opponentPlaceArmies;
+            Map.MapState.OpponentLastAttackTransfer = opponentAttackTransfer;
 
             // Update values 
-            MapUpdate.UpdateOpponent();
-            MapUpdate.UpdateMap();
+            StateCalculator.CalculateState();
 
+            /*
+            // DEBUG
+            Map.Current.SuperRegions.ForEach(SR => AnalyseSuperRegion.TestSuperRegion(SR));
+            Console.ReadLine();
+            */
         }
 
         /// <summary>
@@ -400,7 +403,7 @@ namespace BollieAI2.Services
         {
             CurrentUpdate.UpdateRegion();
             CurrentUpdate.UpdateSuperRegion();
-            CurrentUpdate.UpdateMap();
+            // CurrentUpdate.UpdateMap();
             StrategySuperRegion.UpdateStrategySuperRegion();
                         
             List<PlaceArmies> Pas = StrategyPlaceArmies.SelectPlaceArmies();

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BollieAI2.Board
+namespace BollieAI2.Model
 {
     class Configuration
     {
@@ -21,6 +21,10 @@ namespace BollieAI2.Board
         /// </summary>
         public const int ONE_DIVIDED_ROI = 10;
 
+        /// <summary>
+        /// Minimum Starting Armies each round
+        /// </summary>
+        public const int STARTING_ARMIES_MINIMUM = 5;
 
     }
 }

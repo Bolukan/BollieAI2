@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using BollieAI2.Services;
 
-namespace BollieAI2.Board
+namespace BollieAI2.Model
 {
     /// <summary>
-    /// 
+    /// Region
     /// </summary>
     public partial class Region
     {
@@ -41,11 +42,6 @@ namespace BollieAI2.Board
         #region Turnbased
 
         /// <summary>
-        /// region is seen (update_map)
-        /// </summary>
-        public bool IsVisible { get; set; }
-
-        /// <summary>
         /// Player in charge of region
         /// </summary>
         public PlayerType CurrentPlayer { get; set; }
@@ -54,6 +50,25 @@ namespace BollieAI2.Board
         /// Armies in region
         /// </summary>
         public int CurrentArmies { get; set; }
+
+        #region update_map
+
+        /// <summary>
+        /// Region is visible
+        /// </summary>
+        public bool IsVisible { get; set; }
+
+        /// <summary>
+        /// Player visible
+        /// </summary>
+        public PlayerType VisiblePlayer { get; set; }
+
+        /// <summary>
+        /// Armies visible
+        /// </summary>
+        public int VisibleArmies { get; set; }
+
+        #endregion
 
         /// <summary>
         /// 95% or more success in attack of this region

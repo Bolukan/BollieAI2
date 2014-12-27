@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using BollieAI2.Board;
+using BollieAI2.Model;
 
 namespace BollieAI2.Services
 {
@@ -40,15 +40,6 @@ namespace BollieAI2.Services
             );
         }
 
-        /// <summary>
-        /// Update Current values for Map
-        /// </summary>
-        public static void UpdateMap()
-        {
-            // Count Regions for each PlayerType
-            Map.Current.CurrentRegionsCount =
-                Map.Current.Regions.GroupBy(r => r.CurrentPlayer).ToDictionary(g => g.Key, g => g.Count());
-        }
 
 
     }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using BollieAI2.Board;
+using BollieAI2.Model;
 
 namespace BollieAI2.Services
 {
@@ -32,7 +32,7 @@ namespace BollieAI2.Services
             // Update values
             CurrentUpdate.UpdateRegion();
             CurrentUpdate.UpdateSuperRegion();
-            CurrentUpdate.UpdateMap();
+            // CurrentUpdate.UpdateMap();
 
         }
 

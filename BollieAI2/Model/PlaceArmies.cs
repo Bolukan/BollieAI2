@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BollieAI2.Board
+namespace BollieAI2.Model
 {
     /// <summary>
     /// Command to Place armies

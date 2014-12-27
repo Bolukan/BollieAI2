@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using BollieAI2.Board;
+using BollieAI2.Model;
 
-namespace BollieAI2.Helpers
+namespace BollieAI2.Services
 {
     public static class EnumerationExtensions
     {

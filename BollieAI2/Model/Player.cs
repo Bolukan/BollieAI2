@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BollieAI2.Helpers;
 
-namespace BollieAI2.Board
+namespace BollieAI2.Model
 {
     /// <summary>
     /// The player for a region
