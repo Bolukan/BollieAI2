@@ -8,25 +8,37 @@ namespace BollieAI2.Services
 {
     public class FloodsCalculation
     {
-        public static void CalcDangerousBorderDistance()
+        public static void CalculateFlood(IEnumerable<Region> FloodSource)
         {
-            IEnumerable<Region> regionsDangerous = Map.Current.Regions.Player(PlayerType.Dangerous);
-            
             // reset value
-            Map.Current.Regions.ForEach(R => R.DangerousBorderDistance = int.MaxValue);
-            // Set Dangerous on 0
-            foreach(Region r in regionsDangerous)
+            Map.Current.Regions.ForEach(R => R.Flood = int.MaxValue);
+            // Set Source of flood on 0
+            foreach (Region r in FloodSource)
             {
-                r.DangerousBorderDistance = 0;
+                r.Flood = 0;
             }
 
-            IEnumerable<Region> regionsOpen = Map.Current.Regions.Where(R => R.DangerousBorderDistance == int.MaxValue);
+            // regions not calculated yet
+            IEnumerable<Region> regionsOpen = Map.Current.Regions.Where(R => R.Flood == int.MaxValue);
             while (regionsOpen.Any())
             {
-                List<Region> regionsFlood = regionsOpen.Where(R => R.Neighbours.Any(N => N.DangerousBorderDistance < int.MaxValue)).ToList();
+                List<Region> regionsFlood = regionsOpen.Where(R => R.Neighbours.Any(N => N.Flood < int.MaxValue)).ToList();
                 if (regionsFlood.Any())
-                    regionsFlood.ForEach(R => R.DangerousBorderDistance = R.Neighbours.Min(N => N.DangerousBorderDistance) + 1);
+                {
+                    regionsFlood.ForEach(R => R.Flood = R.Neighbours.Min(N => N.Flood) + 1);
+                }
+                else
+                {
+                    // can't find any neighbours .... some floods can not reach every region
+                    regionsOpen = Enumerable.Empty<Region>();
+                }
             }
         }
+
+        public static void CalcDistanceRegion()
+        {
+
+        }
+
     }
 }

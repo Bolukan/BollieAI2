@@ -4,7 +4,7 @@ using System.Linq;
 
 using BollieAI2.Model;
 
-namespace BollieAI2.Services
+namespace BollieAI2.State
 {
     /// <summary>
     /// R03

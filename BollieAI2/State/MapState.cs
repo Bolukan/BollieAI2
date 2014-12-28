@@ -30,6 +30,9 @@ namespace BollieAI2.State
         /// </summary>
         public int StartingArmies { get; set; }
 
+        /// <summary>
+        /// Reset to 0 when StartingArmies is set
+        /// </summary>
         public int PlacedArmies { get; set; }
         
         /// <summary>
@@ -74,18 +77,5 @@ namespace BollieAI2.State
         /// </summary>
         public List<AttackTransfer> OpponentLastAttackTransfer { get; set; }
         
-
-        /*
-/// <summary>
-/// Update Current values for Map
-/// </summary>
-public static void UpdateMap()
-{
-    // Count Regions for each PlayerType
-    Map.Current.CurrentRegionsCount =
-        Map.Current.Regions.GroupBy(r => r.CurrentPlayer).ToDictionary(g => g.Key, g => g.Count());
-}
-*/
-
     }
 }

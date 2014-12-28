@@ -35,9 +35,6 @@ namespace BollieAI2.Model
             if (name == Map.Current.OpponentBot) return PlayerType.Opponent;
             return PlayerType.Unknown;
         }
-
     }
-
-
 
 }

@@ -58,12 +58,12 @@
     <Compile Include="Services\Combat.cs" />
     <Compile Include="Services\CurrentUpdate.cs" />
     <Compile Include="Services\FloodsCalculation.cs" />
-    <Compile Include="Services\OpponentMoves.cs" />
+    <Compile Include="State\OpponentMoves.cs" />
     <Compile Include="Services\Parser.cs" />
     <Compile Include="Services\StartingRegions.cs" />
     <Compile Include="Model\PlaceArmies.cs" />
-    <Compile Include="Model\MapUpdate.cs" />
-    <Compile Include="Services\UpdateMap.cs" />
+    <Compile Include="State\MapUpdate.cs" />
+    <Compile Include="Simulation\Simulation.cs" />
     <Compile Include="State\MapState.cs" />
     <Compile Include="State\StateCalculator.cs" />
     <Compile Include="Simulation\AnalyseSuperRegion.cs" />

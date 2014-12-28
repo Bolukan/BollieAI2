@@ -96,7 +96,7 @@ namespace BollieAI2.Services
                         case "wastelands": // I09
                             Wastelands(parts);
                             break;
-                        case "opponent_starting_regions": // 12
+                        case "opponent_starting_regions": // I 12
                             OpponentStartingRegions(parts);
                             break;
                         default:
@@ -378,11 +378,10 @@ namespace BollieAI2.Services
             // Update values 
             StateCalculator.CalculateState();
 
-            /*
             // DEBUG
             Map.Current.SuperRegions.ForEach(SR => AnalyseSuperRegion.TestSuperRegion(SR));
             Console.ReadLine();
-            */
+            
         }
 
         /// <summary>

@@ -45,5 +45,6 @@ namespace BollieAI2.Services
             return pickRegions.OrderByDescending(r => r.SuperRegion.CurrentValue).FirstOrDefault();
         }
 
+
     }
 }

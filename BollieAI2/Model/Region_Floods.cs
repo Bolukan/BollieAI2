@@ -14,6 +14,15 @@ namespace BollieAI2.Model
         /// Distance (1 each Region) to nearest Unknown or Opponent Region
         /// </summary>
         public int DangerousBorderDistance { get; set; }
+
+        /// <summary>
+        /// Calculate Flood
+        /// </summary>
+        public int Flood { get; set; }
+
+    
     }
+
+
 
 }

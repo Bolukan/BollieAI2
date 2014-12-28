@@ -16,8 +16,7 @@ namespace BollieAI2.Simulation
         
         //private static 
         private static int counter;
-
-        
+                
         // initialise
         public AnalyseSuperRegion()
         {

@@ -31,8 +31,8 @@ namespace BollieAI2.State
 
             Map.MapState.OpponentLastAttackTransfer.ForEach(at =>
             {
+                at.TargetRegion.CurrentArmies += at.Armies - Combat.AttackersLosses(at.TargetRegion.CurrentArmies);
                 at.SourceRegion.CurrentArmies -= at.Armies;
-                at.TargetRegion.CurrentArmies += at.Armies;
             }
             );
 
@@ -64,16 +64,49 @@ namespace BollieAI2.State
 
             // update map
             Map.MapState.MapUpdates.ForEach(mu =>
-            {
-                mu.Region.IsVisible = true;
-                mu.Region.CurrentPlayer = mu.Player;
-                mu.Region.CurrentArmies = mu.Armies;
-            }
+                {
+                    mu.Region.IsVisible = true;
+                    mu.Region.CurrentPlayer = mu.Player;
+                    mu.Region.CurrentArmies = mu.Armies;
+                }
             );
 
             // Flood border
-            FloodsCalculation.CalcDangerousBorderDistance();
+            FloodsCalculation.CalculateFlood(Map.Current.Regions.Player(PlayerType.Dangerous));
+            Map.Current.Regions.ForEach(R => R.DangerousBorderDistance = R.Flood);
+        }
+
+        // IS NOT IN USE
+
+        /// <summary>
+        /// Process MapUpdate into Region
+        /// </summary>
+        public static void ProcessMapUpdate()
+        {
+            List<MapUpdate> mapUpdates = Map.MapState.MapUpdates;
+
+            // reset all to invisible
+            Map.Current.Regions.ForEach(R =>
+            {
+                R.IsVisible = false;
+                R.VisibleArmies = 0;
+                R.VisiblePlayer = PlayerType.Unknown;
+            }
+            );
+
+            // set visible regions
+            Map.MapState.MapUpdates.ForEach(MU =>
+            {
+                MU.Region.IsVisible = true;
+                MU.Region.VisiblePlayer = MU.Player;
+                MU.Region.VisibleArmies = MU.Armies;
+                // 
+                MU.Region.CurrentPlayer = MU.Player;
+                MU.Region.CurrentArmies = MU.Armies;
+            }
+            );
 
         }
+
     }
 }

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BollieAI2.Model
+using BollieAI2.Model;
+
+namespace BollieAI2.State
 {
     /// <summary>
     /// R02

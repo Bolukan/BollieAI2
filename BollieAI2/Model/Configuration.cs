@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace BollieAI2.Model
 {
-    class Configuration
+    public class Configuration
     {
         /// <summary>
         /// Name for neutral
@@ -17,14 +17,13 @@ namespace BollieAI2.Model
         public const int WASTELAND_ARMIES = 10;
 
         /// <summary>
-        /// Multiplier for eternal ROI on Bonus Armies =  1/10% = 10
-        /// </summary>
-        public const int ONE_DIVIDED_ROI = 10;
-
-        /// <summary>
         /// Minimum Starting Armies each round
         /// </summary>
         public const int STARTING_ARMIES_MINIMUM = 5;
 
+        /// <summary>
+        /// Multiplier for eternal ROI on Bonus Armies =  1/10% = 10
+        /// </summary>
+        public const int ONE_DIVIDED_ROI = 10;
     }
 }
